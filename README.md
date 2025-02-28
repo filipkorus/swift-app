@@ -2,6 +2,8 @@
 ```shell
 docker compose up
 ```
+**NOTE**: When running the application for the first time, the database will be starting a little bit longer. Wait for the application to start listening on [localhost:8080](http://localhost:8080).
+
 To force rebuild the image add the `--build` flag at the end of the command.
 
 ## Run tests in Docker
