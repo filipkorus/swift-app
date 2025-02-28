@@ -1,0 +1,24 @@
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: "admin"
+      POSTGRES_PASSWORD: "super_secret_password"
+      POSTGRES_DB: "prisma"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: "postgres://admin:super_secret_password@postgres:5432/prisma"
+      NODE_ENV: "production"
+      PORT: 8080
+      LOG_LEVEL: "debug"
+      ALLOWED_ORIGINS: "http://localhost:8080"
+    ports:
+      - "8080:8080"

@@ -1,0 +1,3 @@
+services:
+  backend_test:
+    entrypoint: ["/bin/sh", "-c", "npm run prisma:push && npm run test:coverage"]

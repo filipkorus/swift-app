@@ -1,0 +1,19 @@
+services:
+  postgres_test:
+    image: postgres
+    environment:
+      POSTGRES_USER: "test_user"
+      POSTGRES_PASSWORD: "test_password"
+      POSTGRES_DB: "test_db"
+
+  backend_test:
+    build: ./backend
+    entrypoint: ["/bin/sh", "-c", "npm run prisma:push && npm run test"]
+    depends_on:
+      - postgres_test
+    environment:
+      DATABASE_URL: "postgres://test_user:test_password@postgres_test:5432/test_db"
+      NODE_ENV: "test"
+      PORT: 8080
+      LOG_LEVEL: "error"
+      ALLOWED_ORIGINS: "http://localhost:8080"

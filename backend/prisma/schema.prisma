@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Bank {
+  id            Int     @id @default(autoincrement())
+  swiftCode     String  @unique @db.VarChar(11)
+  bankName      String
+  address       String
+  isHeadquarter Boolean
+  countryId     Int
+
+  country Country @relation(fields: [countryId], references: [id])
+
+  @@index([swiftCode])
+  @@index([countryId])
+}
+
+model Country {
+  id          Int    @id @default(autoincrement())
+  countryName String @unique
+  countryISO2 String @unique @db.VarChar(2)
+
+  banks Bank[]
+
+  @@index([countryISO2])
+}
